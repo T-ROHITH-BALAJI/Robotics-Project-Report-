@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CNN-Based Fruit and Vegetable Sorting with Robotic Arm in PyBullet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #ffffff;
+      color: #000000;
+      line-height: 1.6;
+      transition: all 0.4s ease;
+    }
+
+    body[data-theme="light"] {
+      background: #ffffff;
+      color: #0b0b0b;
+    }
+
+    header {
+   
+        background: linear-gradient(135deg, #253c4d, #1d1f41);
+
+
+        color: #ffffff;
+      text-align: center;
+      padding: 3rem 1rem;
+      box-shadow: 0 6px 25px rgba(255, 255, 255, 0.5);
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #19252fd7;
+      backdrop-filter: blur(15px);
+      padding: 1rem 0;
+      text-align: center;
+      border-bottom: 2px solid rgba(62, 34, 68, 0.51);
+      white-space: nowrap;        /* Prevents items from wrapping */
+  overflow-x: auto; 
+    }
+
+    body[data-theme="light"] nav {
+      background: rgba(63, 89, 111, 0.95);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    }
+
+    nav a {
+      color: #bfdbfe;
+      margin: 0 1.5rem;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 0.6rem 0.9rem;
+      border-radius: 8px;
+      transition: all 0.3s ease-in-out;
+      white-space: nowrap; 
+    }
+
+    nav a:hover,
+    nav a.current {
+      color: #6d473a;
+      transform: scale(1.05);
+    }
+
+    section {
+      padding: 3rem 8%;
+      max-width: 1200px;
+      margin: 2rem auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    body[data-theme="light"] {
+  background: linear-gradient(135deg, #ffffff, #f0f9ff);
+  color: #ccd3dc;
+}
+
+
+
+    section h2 {
+      color: #3b82f6;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 3px solid #4b5563;
+      padding-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    section h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #1e40af;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      padding-left: 0.5rem;
+      border-left: 4px solid #3b82f6;
+    }
+
+    section p, section ul, section ol {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      color: inherit;
+    }
+
+    footer {
+      background: linear-gradient(135deg, #5d1e8a, #667183, #60a5fa);
+      color: #bfdbfe;
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 4rem;
+      font-size: 1rem;
+      border-top: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    body[data-theme="light"] footer {
+      background: #e5e7eb;
+      color: #ffffff;
+      border-top: 2px solid rgba(0, 0, 0, 0.15);
+    }
+
+   
+  </style>
+</head>
+<body data-theme="dark">
+  <button id="themeToggle" onclick="toggleTheme()">Toggle Theme</button>
+  <header>
+    <h1>CNN-Based Fruit and Vegetable Sorting with Robotic Arm in PyBullet</h1>
+  </header>
+  <nav>
+    <a href="#abstract">Abstract</a>
+    <a href="#toc">TOC</a>
+    <a href="#introduction">Introduction</a>
+    <a href="#literature">Literature Review</a>
+    <a href="#methodology">Methodology</a>
+    <a href="#technologies">Technologies</a>
+    <a href="#results">Results</a>
+    <a href="#demo">Output</a>
+    <a href="#conclusion">Conclusion</a>
+    <a href="#references">References</a>
+  </nav>
+  <!-- Content from web2.html has been inserted here -->
+  <section>
+    <H1> AMRITA VISHWA VIDHYAPEETHAM</H1>
+
+    <H2>      </H2>
+
+    <p><strong>22AIE213:</strong> Introduction to AI in Robotics</p>
+    <p><strong>22MAT220:</strong> Mathematics for Computing - 4</p>
+
+ 
+    <h3>  Group-16 members :</h3>
+    <ul>
+      <li>A Deepthi       - CB.SC.U4AIE23007</li>
+      <li>A Sai Sanjana   - CB.SC.U4AIE23013</li>
+      <li>G Prakash       - CB.SC.U4AIE23014</li>
+      <li>T.Rohith Balaji - CB.SC.U4AIE23069</li>
+    </ul>
+  </section>
+
+<section id="toc">
+    <h2>Table of Contents</h2>
+    <ul>
+        <li>Abstract</li>
+        <li>Table of Contents</li>
+        <li>Introduction</li>
+        <li>Literature Review / Related Work</li>
+        <li>Methodology & Implementation</li>
+        <li>Technologies Used</li>
+        <li>Results and Discussion</li>
+        <li>Demo of Simulation</li>
+        <li>Conclusion and Future Work</li>
+        <li>References</li>
+    </ul>
+</section>
+
+
+
+<section id="abstract">
+    <h2>Abstract</h2>
+    <p> This project presents a smart robotic sorting system that autonomously classifies and sorts fruits and vegetables using computer vision and simulation-based robotic control. A CNN model classifies the object based on its name, and a PyBullet-simulated robotic arm with a gripper executes the corresponding pick-and-place operation. The system eliminates manual sorting, improving speed, accuracy, and scalability in agricultural processes.
+        This project involves designing and implementing a robotic arm capable of sorting fruits and vegetables based on  type. The robotic arm uses a combination of sensors and text processing to automate the sorting process, improving efficiency and reducing manual labor in agricultural and retail sectors.
+    In modern agriculture and food industries, efficient sorting of fruits and vegetables is crucial for quality control and operational productivity. Manual sorting is often labor-intensive, inconsistent, and time-consuming. 
+    This project presents the design and development of a low-cost, semi-automated robotic arm that can sort fruits and vegetables based on visual features such as color, shape, and size. The system integrates text modeule for  acquisition, OpenCV for real-time text  processing, and a controlled robotic arm for precise item manipulation. 
+    The sorting decisions are based on predefined thresholds or classifiers that map specific features to categories. 
+    The simulation is developed using Pybullet and the physical prototype is built with 3D printed parts. This project demonstrates how robotic automation can be applied to agricultural post-harvest operations, ensuring faster, more reliable sorting with minimal human intervention. 
+    Future enhancements aim to integrate machine learning models and conveyor belt systems to enable continuous, large-scale sorting.</p>
+</section>
+
+<section id="introduction">
+    <h2>Introduction</h2>
+    <p>In the rapidly evolving landscape of automation and intelligent systems, the fusion of machine learning with robotics has unlocked powerful capabilities that were once limited to human intervention. One such area gaining significant attention is autonomous object detection, classification, and manipulation — particularly in environments like agriculture, food processing, and logistics.</p>
+    <p>This project presents a smart robotic sorting system that leverages computer vision and reinforcement-based robotic control in a simulated environment. The primary aim is to design a framework where a robot can classify various fruits and vegetables using a Convolutional Neural Network (CNN), respond to user inputs, and autonomously execute pick-and-place operations using a high-fidelity simulation environment like Pybullet.</p>
+    <p>The system simulates a real-world scenario where:</p>
+    <ul>
+        <li>Image-based object classification using a trained CNN model.</li>
+        <li>Real-time object spawning and movement simulation in PyBullet.</li>
+        <li>User input to select an item name, triggering autonomous object identification and sorting.</li>
+        <li>Smooth trajectory planning using Bézier curves and inverse kinematics.</li>
+        <li>Realistic object interaction using a simulated gripper.</li>
+    </ul>
+    <p>To enable such intelligent behavior, several key components are integrated:</p>
+    <ul>
+        <li>A deep learning model for text-based object classification, trained on labeled datasets of fruits and vegetables.</li>
+        <li>A robot simulation environment using Pybullet that enables dynamic modeling of the robotic arm, gripper mechanics, and scene interaction.</li>
+    </ul>
+    <p>The choice of simulation before real-world deployment allows for safe testing, iteration, and performance evaluation without hardware constraints. This modular and scalable setup can be extended to real-time robotic systems, paving the way for intelligent warehouse systems, automated quality control in food industries, and robotic assistants in smart agriculture.</p>
+    <p>Moreover, this project encourages human-robot collaboration by including a user-guided selection process, making the system more interpretable and responsive rather than fully black-boxed automation. The interactive approach also enhances usability in semi-autonomous environments where human supervision or override may be essential.</p>
+    <p>In summary , Robotic systems integrated with AI models are revolutionizing industries by automating complex tasks like object detection, classification, and manipulation. In agriculture and food logistics, sorting fruits and vegetables is vital for quality control. This project leverages PyBullet simulation and a CNN-based classifier to simulate an intelligent robotic arm system that can pick and place items into designated trays based on their classification.</p>
+
+
+</section>
+
+<section>
+
+<p id="literature">
+    <h2>Literature Review / Related Work</h2>
+    <p>Several studies have focused on using robotic systems for agricultural automation. Past works include robotic pickers and conveyors equipped with machine learning to detect ripeness. Our system builds on this by integrating a sorting mechanism at the end-effector stage, using simpler components for cost-efficiency and reliability in small-scale industries.</p>
+    <ul>
+        <li><strong>Vision-based Robotic Sorting:</strong> Research has demonstrated the success of CNNs in classifying agricultural products. For instance, systems such as YOLO and ResNet have been used for fruit detection and sorting. </li>
+        <li><strong>Grasping and Manipulation:</strong> Robotic pick-and-place tasks are often implemented using inverse kinematics and trajectory optimization. Libraries like PyBullet and CoppeliaSim provide flexible environments for simulating such actions. </li>
+        <li><strong>Self-supervised Learning in Robotics:</strong> Techniques like Time Convolutional Networks (TCNs) and LSTMs have enabled robots to understand patterns in sensory data and improve over time through simulation.</li>
+    </ul>
+     <p>Libraries such as PyBullet have made dynamic simulation environments accessible for academic and prototype development. Most real-world applications require expensive sensors or specialized hardware; this simulation bridges that gap using low-cost alternatives and open-source tools.</p>
+    
+</section>
+
+<section id="Methodology & Implementation">
+    <h2>Methodology & Implementation: Robotic Pick-and-Place System</h2>
+    <p>The system follows a structured sequence of six major stages for identifying, classifying, and sorting fruits and vegetables in a simulated environment:</p>
+    <ul>
+        <li><strong>Mixed Items on a Tray</strong>:The workspace contains a tray with a mix of items represented by colored blocks—red blocks for fruits and green blocks for vegetables.</li>
+
+
+        <li><strong>User Input</strong>: The user provides the name of a fruit or vegetable through the console, initiating the object recognition process.</li>
+        
+        <li><strong>Text Classification using- CNN</strong>: A trained Convolutional Neural Network (CNN) model is used to classify the user's input as either a fruit or a vegetable based on the text provided. </li>
+        
+        <li><strong>Object Detection</strong>:the robotic arm identifies the nearest block of the corresponding color (red for fruits, green for vegetables) and uses its gripper to pick it up,Inverse kinematics is applied to calculate the arm’s joint positions for accurate movement.</li>
+        
+        <li><strong>Pick Phase</strong>: The robotic arm moves above the target object using a smooth Bézier curve trajectory, lowers itself, activates the gripper to grasp the object, and lifts it safely out of the tray.</li>
+        
+        <li><strong>Place Phase</strong>: Based on the object type, the robot navigates to the appropriate basket (fruit or vegetable) and places the object inside by opening the gripper, again using smooth and collision-free movement planning.</li>
+        
+        <li><strong>Reset</strong>: After successful placement,once all are sorted task completion message is added   the robotic arm returns to its home position to prepare for the next cycle, ensuring readiness for continuous operation or further user interaction.</li>
+    </ul>
+    <section>
+        <h2>1. Tokenization</h2>
+        <p><strong>Character Extraction:</strong> Individual characters are extracted from each word.</p>
+        <p><strong>Character-to-Index Mapping:</strong>Keras' Tokenizer is used to provide each character a distinct integer. </p>
+        <p><strong>Fixed-Length Padding:</strong>For consistent CNN input, all sequences are padded with zeros to the same length (max_length). </p>
+      </section>
+      <section>
+        <h2>2. Embedding Layer</h2>
+        <p>
+            Each character, represented as an integer index, is converted into a dense vector of fixed size
+        </p>
+        <p>
+            These vectors have trainable weights, allowing the model to learn and capture character relationships.
+        </p>
+        <img src="images/cnn images/2.png.jpg" alt="Embedding Image 1">
+        <p><strong>T:</strong> Sequence length<br>
+           <strong>d:</strong> Embedding dimension</p>
+       
+      </section>
+    
+      <section>
+        <h2>Convolutional Neural Network (CNN)</h2>
+        <h3>1D Convolution (Conv1D)</h3>
+        <p>
+            A filter (kernel) moves across the input sequence to apply the convolution operation.
+        </p>
+        <p>
+            At each step, it calculates the dot product between the filter and the corresponding input section.
+        </p>
+        <img src="images/cnn images/3.png.jpg" alt="Conv1D Image 1">
+        
+        
+        <p>
+          <strong>Y[i]</strong>: Output value at position i <br>
+          <strong>X[i+j]</strong>: Input at position i+j<br>
+          <strong>K[j]</strong>: Filter value at position j<br>
+          <strong>b</strong>: Bias term<br>
+          <strong>F</strong>: Filter size of the kernel
+        </p>
+      
+    
+        <h3>ReLU (Rectified Linear Unit)</h3>
+            
+        <p>ReLU (Rectified Linear Unit) is a widely used activation function that introduces non-linearity into deep learning models.</p>
+        <p>
+            It works by replacing all negative input values with zero, while keeping positive values unchanged.
+        </p>
+        <p>
+            This simple yet effective transformation allows neural networks to model complex patterns and relationships.
+ReLU also helps in reducing the chances of the vanishing gradient problem during training.
+        </p>
+        <img src=" images/cnn images/4.png.jpg" alt="ReLU Image 1">
+        
+    
+        <h3>Max Pooling</h3>
+        <p> it is a down sampling technique used in convolutional neural networks (CNNs) to reduce the size of feature maps while preserving the most important information. Instead of learning parameters, max pooling just picks the maximum value from a feature map.</p>
+        <img src="images/cnn images/5.png.jpg" alt="Max Pooling Image 1">
+      
+        <h3>Fully Connected (Dense) Layer</h3>
+        <p>Each neuron connects to all previous neurons, learning complex patterns,relationships  and making final predictions.</p>
+        <img src="images/cnn images/6.png.jpg" alt="Dense Layer Image 1">
+        <img src="images/cnn images/7.png.jpg" alt="Dense Layer Image 2">
+    
+        <h3>Sigmoid</h3>
+        <p>Any real number can be changed into a value between 0 and 1. It is frequently used to express probabilities in the output layer of binary classification models.</p>
+        <img src="images/cnn images/8.png.jpg" alt="Sigmoid Image 1">
+      
+      </section>
+    
+      <section>
+        <h2>Forward Kinematics</h2>
+        <p>Forward kinematics is used to compute the exact position and orientation of a robot's end-effector based on its joint angles.</p>
+        <p>It applies a series of transformation matrices derived from Denavit-Hartenberg (DH) parameters to model the robot’s structure.</p>
+        <p>By multiplying these matrices from the base to the end-effector, the final pose of the end-effector in 3D space is obtained.
+            This process is essential for determining how the robot will move given specific joint configurations.</p>
+        <img src="images/cnn images/9,png.jpg" alt="Forward Kinematics Image 1">
+
+        <p>The total transformation from base to end-effector is obtained by multiplying all joint transformations.</p>
+        <img src="images/cnn images/10.png.jpg" alt="Forward Kinematics Image 2">
+        <img src="images/cnn images/11.png.jpg" alt="Error Calculation Image 2">
+    
+      </section>
+      <section>
+        <h2>Calculate the Error</h2>
+        <p>it calculates the difference between the target position and current end-effector position. The error (e) tells the robot how far and in which direction it needs to move to reach the target.</p>
+        <img src="images/cnn images/12.png.jpg" alt="Error Calculation Image 1">
+      </section>
+    
+      <section>
+        <h2>Inverse Kinematics</h2>
+        <p>Inverse kinematics minimizes the difference between the current and desired position (pose) of the robot’s end-effector.</p>
+        <p>Minimizes pose error using Damped Least Squares (DLS). This avoids instability and singularities.
+          Here, λ is a small damping constant to avoid instability ;The damping constant λ is introduced to prevent numerical instability, especially when the Jacobian matrix is close to singular. 
+        </p>
+        <P>This approach ensures smoother and more stable joint updates, making it suitable for complex robotic movements.
+
+        </P>
+        <img src="images/cnn images/13.png.jpg" alt="Inverse Kinematics Image 1">
+        <p>
+          <strong>J:</strong> Jacobian matrix<br>
+          <strong>Δx:</strong> Desired end-effector change<br>
+          <strong>λ:</strong> Small damping constant (0.01–0.1)<br>
+          <strong>I:</strong> Identity matrix
+        </p>
+        
+      </section>
+    
+      <section>
+        <h2>Update the Joint Angles</h2>
+        <p>Repeat until pose error is below the threshold or iteration limit is reached.</p>
+        <img src="images/cnn images/14.png.jpg" alt="Joint Angle Update Image 1">
+      </section>
+    
+      <section>
+        <h2>Bezier Curves (Trajectory Smooth Movement)</h2>
+        <p>Bezier curves are used to generate smooth and continuous trajectories between two positions for robotic arm movement.</p>
+        <p>By calculating intermediate control points, the path ensures gradual transitions without abrupt changes in direction or speed.</p>
+        <p>
+            This results in more natural and stable motion, reducing mechanical stress on the robot and improving precision.
+        Such smooth trajectories are crucial in tasks requiring accuracy and fluidity, like picking or placing objects.
+        </p>
+        
+
+    
+        <img src="images/cnn images/16.png.jpg" alt="Bezier Curve Image 1">
+
+        <p>
+          <strong>P0:</strong> Start point<br>
+          <strong>P1:</strong> Intermediate control point 1<br>
+          <strong>P2:</strong> Intermediate control point 2<br>
+          <strong>P3:</strong> End point<br>
+          <strong>T:</strong> Curve parameter
+        </p>
+      </section>
+    
+      <section>
+        <h2>Block Optimization</h2>
+        <p>To optimize efficiency, the robotic arm minimizes its total travel distance during operations.</p>
+        <p>It does this by selecting the closest unpicked block at each step using Euclidean distance, also known as the L2 norm.</p>
+        <p>This distance is calculated between the current arm position and all available targets, choosing the one with the shortest path.</p>
+        <p>By continuously selecting the nearest block, the robot reduces movement time and energy consumption, enhancing overall performance.</p>
+        <img src="images/cnn images/15.png.jpg" alt="Block Optimization Image 1">
+      </section>
+</section>
+
+
+
+<section id="technologies">
+    <h2>Technologies Used</h2>
+    <ul>
+        <li><strong>TensorFlow/Keras</strong> – For building and loading the CNN classification model</li>
+        <li><strong>PyBullet</strong> – For robot and object simulation with physics,pubullet data also comes under this </li>
+        <li><strong>URDF</strong> – For 3D modeling of robot and environment elements</li>
+        <li><strong>Python/numpy</strong> – Primary scripting language for logic and controland also numpy library used</li>
+    </ul>
+</section>
+
+<section id="results">
+    <h2>Results and Discussion</h2>
+    <p>The robotic arm successfully demonstrated classification-based sorting in a simulated environment. The pick-and-place action was reliable and precise. User input correctly mapped to item class, and the robot moved accordingly to pick and place the item in the right tray. Challenges involved positioning accuracy and tuning the gripper constraints for realistic grasping.</p>
+    <h3>CNN Text Classification Evaluation Parameters :</h3>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+
+<div>
+    <img src="images/model evaluation.jpg" alt="CNN Text Classification" style="width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+    <p style="text-align: center;"><strong>Figure 1:</strong> model evaluation </p>
+</div>
+
+<div>
+    <img src="images/confusion matrix.jpg" alt="con matrix" style="width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+    <p style="text-align: center;"><strong>Figure 2:</strong> Confusion Matrix showing actual over predicted </p>
+</div>
+
+<div>
+    <img src="images/trainvalid.jpg" alt="accuracy over epochs " style="width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+    <p style="text-align: center;"><strong>Figure 3:</strong> Trainng and Validation accuracy over epochs </p>
+</div>
+
+<div>
+    <img src="images/classification report.jpg" alt="classification" style="width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+    <p style="text-align: center;"><strong>Figure 4:</strong> Classification Report</p>
+</div>
+
+</div>
+
+    
+
+</section>
+
+<section id="demo">
+    <h2>Output of Simulation </h2>
+    <ul>
+        <li><strong>User Interaction:</strong> The system waits for the user to select an object (based on CNN classification), which then triggers the sorting task.</li>
+        <li><strong>Simulation:</strong> The full simulation is executed in Pybullet. Objects are randomly placed in the mixed basket, and the robot, upon user command, highlights the selected object and places it into the right tray.</li>
+    </ul>
+
+    <p>The simulation  shows the following sequence:</p>
+    <ol>
+        <li>User enters an object name (e.g., "apple").</li>
+        <li>The CNN classifies it as a fruit.</li>
+        <li>The robotic arm locates a red block (representing a fruit).</li>
+        <li>It moves to pick the block, grips it, and lifts it.</li>
+        <li>The robot places the block in the fruit tray.</li>
+    </ol>
+
+    <h3>System Flow Diagram</h3>
+    <pre class="flowchart">
+┌──────────────────────┐
+│   User Enters Name   │
+└─────────┬────────────┘
+          ↓
+┌──────────────────────┐
+│ CNN Classifies Input │
+└─────────┬────────────┘
+          ↓
+┌──────────────────────┐
+│ Identify Matching Obj│
+└─────────┬────────────┘
+          ↓
+┌──────────────────────┐
+│  Move to Object Loc  │
+└─────────┬────────────┘
+          ↓
+┌──────────────────────┐
+│     Grip & Pick      │
+└─────────┬────────────┘
+          ↓
+┌──────────────────────┐
+│  Move to Tray & Drop │
+└──────────────────────┘
+    </pre>
+
+    <!-- FIRST SET: Three Images + One Simulation Video -->
+<h3>Output for vegetable :  </h3>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+<div style="flex: 1; min-width: 30%;">
+    <img src="images/tomato.png.jpg" alt="Image 1" style="width: 100%; border-radius: 5px;">
+    <p style="text-align: center;">User input given as tomato </p>
+</div>
+<div style="flex: 1; min-width: 30%;">
+    <img src="images/tomato1.png.jpg" alt="Image 2" style="width: 100%; border-radius: 5px;">
+    <p style="text-align: center;">Data output showing target coordinates and corresponding inverse kinematics metrics during the trajectory planning process</p>
+</div>
+<div style="flex: 1; min-width: 30%;">
+    <img src="images/tomato2.png.jpg" alt="Image 3" style="width: 100%; border-radius: 5px;">
+    <p style="text-align: center;">Data output showing target coordinates and corresponding inverse kinematics metrics during the trajectory planning process</p>
+</div>
+</div>
+<p style="text-align: center;"><strong>Simulation Output 1</strong></p>
+<video width="100%" controls>
+<source src="images/tomato.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+
+<!-- SECOND SET: Three Images + One Simulation Video -->
+<h3>Output for fruit :</h3>
+<div style="display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 20px;">
+<div style="flex: 1; min-width: 30%;">
+    <img src="images/apple.png.jpg" alt="Image 4" style="width: 100%; border-radius: 5px;">
+    <p style="text-align: center;">user input given as apple </p>
+</div>
+<div style="flex: 1; min-width: 30%;">
+    <img src="images/apple1.png.jpg" alt="Image 5" style="width: 100%; border-radius: 5px;">
+    <p style="text-align: center;">Data output showing target coordinates and corresponding inverse kinematics metrics during the trajectory planning process</p>
+</div>
+<div style="flex: 1; min-width: 30%;">
+    <img src="images/apple2.png.jpg" alt="Image 6" style="width: 100%; border-radius: 5px;">
+    <p style="text-align: center;">Data output showing target coordinates and corresponding inverse kinematics metrics during the trajectory planning process</p>
+</div>
+</div>
+<p style="text-align: center;"><strong>Simulation Output 2</strong></p>
+<video width="100%" controls>
+<source src="images/apple.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+
+
+<h3>Combined fruit vegetable :</h3>
+<p style="text-align: center;"><strong>Simulation Output </strong></p>
+<video width="100%" controls>
+<source src="images/conbined.mp4" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+
+
+
+
+<section id="conclusion">
+    <h2>Hardware prototype for pick and place </h2>
+    <p><strong>Description :</strong> The same  hardware prototype using a real robot arm and camera can mirror the same logic for this fruits and vegetables sorting in real-time application.
+        The hardware implementation of the pick-and-place system replicates the simulation environment in a real-world setup using a robotic arm.The primary objective is to perform the same sorting logic—used in simulation—on actual physical objects such as fruits and vegetables.This hardware prototype demonstrates real-time object manipulation and sorting, mirroring the logic used in the PyBullet simulation.</p>
+     <video width="100%" controls>
+        <source src="images/hardwaredemo (online-video-cutter.com).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</section>
+
+
+<section id="conclusion">
+    <h2>Conclusion and Future Work</h2>
+    <p><strong>Conclusion:</strong> This project successfully demonstrates a CNN-integrated robotic sorting system within a simulated environment. The combination of visual recognition, user-driven interaction, and motion planning results in a robust framework for smart automation.
+        Smooth and accurate movement of robotic arm to pick and place the correct object is done using Bezier curve.
+       <p>The Robotic Arm picks the closest block, choosing red for fruits and green for vegetables, making the process efficient and reducing total distance in simulation.
+       <p> The robotic arm moves with precision, using inverse kinematics (IK) for grasping the object, and forward kinematics (FK) to ensure each movement is executed correctly and smoothly.
+        Also implemented pick and place of Color cubes using robotic arm in hardware.</p>
+    
+    
+    
+    </p>
+    <p><strong>Future Work:</strong></p>
+    <ul>
+        <li>Integration of CNN with the robotic arm simulation setup , implementing input capture; object representation in the simulation.
+             This will allow the arm to identify and sort objects within the virtual environment based on the CNN's classification.</li>
+        <li>The system will be expanded to hardware by attaching a camera to the robotic arm for real-time object capture. 
+            The CNN will classify the objects and guide the arm to sort them physically into the correct categories.</li>
+        <li>Implementation of Trajectory optimisation which will refine the arm's movement paths for smoother and more efficient motion.</li>
+    </ul>
+</section>
+
+<section id="references">
+    <h2>References</h2>
+    <ol>
+        <li>Smith, J., & Brown, A. (2021). Agricultural Robotics: A Survey. Journal of Robotics Research.</li>
+        <li>Kumar, R. et al. (2020). Low-Cost Robotic Arms in Farm Sorting. IEEE Transactions on Automation.</li>
+        <li>Redmon, J., & Farhadi, A. (2018). YOLOv3: An Incremental Improvement.</li>
+        <li>Simonyan, K., & Zisserman, A. (2014). Very Deep Convolutional Networks for Large-Scale Image Recognition (VGGNet).</li>
+    </ol>
+    </section>
+ 
+  <script>
+    function toggleTheme() {
+      const body = document.body;
+      const current = body.getAttribute("data-theme");
+      body.setAttribute("data-theme", current === "light" ? "dark" : "light");
+    }
+  </script>
+</body>
+</html>
